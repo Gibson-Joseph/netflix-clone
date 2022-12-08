@@ -4,6 +4,8 @@ import { baseUrl } from "../constants/movie";
 import { Movie } from "../typings";
 import { FaPlay } from "react-icons/fa";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
+import { useRecoilState } from "recoil";
+import { modalState, movieState } from "../atoms/modalAtom";
 
 interface Props {
   netflixOriginals: Movie[];
@@ -13,7 +15,10 @@ const Banner = ({ netflixOriginals }: Props) => {
   //   console.log("netflixOriginals", netflixOriginals);
 
   const [movie, setMovie] = useState<Movie | null>(null);
-  console.log(movie);
+  const [showModal, setShowModal] = useRecoilState(modalState);
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieState);
+
+  // console.log(movie);
 
   useEffect(() => {
     //Get Randem Index
@@ -47,7 +52,13 @@ const Banner = ({ netflixOriginals }: Props) => {
           Play
         </button>
         {/* use custom tailwind bg color */}
-        <button className="bannerButton bg-[gray]/70">
+        <button
+          onClick={() => {
+            setCurrentMovie(movie);
+            setShowModal(true);
+          }}
+          className="bannerButton bg-[gray]/70"
+        >
           More Info <InformationCircleIcon className="h-5 w-5 md:h-8 md:w-8" />
         </button>
       </div>
